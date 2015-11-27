@@ -1,0 +1,20 @@
+.root{
+    display: block;
+}
+
+
+.button1{
+    -fx-text-fill: #006464;
+    -fx-background-color: #FFB951;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-font-size: 20px;
+    -fx-background-size: 50px;
+}
+
+.hbox{
+    -fx-background-color: #336699;
+    -fx-alignment: top-left;
+    -fx-pref-height: 50px;
+
+}
