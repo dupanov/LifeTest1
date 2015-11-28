@@ -15,9 +15,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.EventListener;
 
-public class Main extends Application implements ActionListener {
+public class Main extends Application  {
 
 
     @Override
@@ -44,7 +46,7 @@ public class Main extends Application implements ActionListener {
         edit.getStyleClass().add("button1");
         hbox.getChildren().add(edit);
 
-        GridPane gridPane = new GridPane();
+        final GridPane gridPane = new GridPane();
         gridPane.setHgap(1);
         gridPane.setVgap(1);
         gridPane.setPadding(new Insets(10, 0, 10, 0));
@@ -53,13 +55,28 @@ public class Main extends Application implements ActionListener {
         scrollPane.setContent(gridPane);
 
         LifeRunner life = new LifeRunner(); // TODO возможно, main переедет в LifeRunner класс
-        ArrayList<Actor> actor = new ArrayList<>();
-        for (int i = 0; i < life.size; i++) {
-            for (int j = 0; j < life.size; j++) {
-                Actor player = new Actor();
-                actor.add(i+j, player); //—оздаем нового актера
-                gridPane.add(actor.get(i + j).getPic(), i, j); //¬т€гиваем картинку на позицию
-                player.addActionListener(this);
+        ArrayList<Actor> actorArrayList = new ArrayList<>();
+        for (int i = 0; i < LifeRunner.size; i++) {
+            for (int j = 0; j < LifeRunner.size; j++) {
+                final Actor actor = new Actor();
+                actorArrayList.add(i + j, actor);//—оздаем нового актера
+              //  actor.setDead();
+                gridPane.add(actor.getPic(), i, j); //¬т€гиваем картинку на позицию
+                actor.getPic().setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+                    @Override
+                    public void handle(MouseEvent arg0) {
+                        GridPane.getRowIndex(actor.getPic());
+                        GridPane.getColumnIndex(actor.getPic());
+                        if (actor.isAlive()) {
+                            actor.setDead();
+                        } else {
+                            actor.setAlive();
+                        }
+
+                    }
+
+                });
 
             }
             }

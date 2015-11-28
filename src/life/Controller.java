@@ -12,6 +12,10 @@ import java.util.ResourceBundle;
 
 
 public class Controller {
+    public Actor actor;
+    public void onClick(){
+
+    }
 
 
 
