@@ -1,7 +1,6 @@
 package life;
 
 import javafx.scene.layout.GridPane;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -32,6 +31,31 @@ public class LifeRunner {
         }
     }
 
+    public static void runner(){
+        while(getRunningState()){
+            System.out.println("2" + getRunningState());
+            Iterator it = actorArrayList.iterator();
+            while(it.hasNext()){
+                System.out.println("3");
+                Actor act = (Actor)it.next();
+                act.move();
+            }
+        }
+    }
+
+
+    public static void runner(boolean val){
+        setRunningState(val);
+        while(getRunningState()){
+            System.out.println("2" + getRunningState());
+            Iterator it = actorArrayList.iterator();
+            while(it.hasNext()){
+                System.out.println("3");
+                Actor act = (Actor)it.next();
+                act.move();
+            }
+        }
+    }
 
     public static int getSize(){
         return size;
@@ -53,15 +77,5 @@ public class LifeRunner {
     public static void main(String[] args) {
         setRunningState(true);
         Main.main(args);
-        System.out.println("1"+getRunningState());
-        while(getRunningState()){
-            System.out.println("2" + getRunningState());
-            Iterator it = actorArrayList.iterator();
-            while(it.hasNext()){
-                System.out.println("3");
-                Actor act = (Actor)it.next();
-                act.move();
-            }
-        }
     }
 }

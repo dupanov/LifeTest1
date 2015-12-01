@@ -28,14 +28,16 @@ public class Main extends Application  {
         hbox.getStyleClass().add("hbox");
         borderPane.setTop(hbox);
 
-        Button btn = new Button();
-        btn.setText("New Game");
-        btn.getStyleClass().add("button1");
-        hbox.getChildren().add(btn);
+        Button move = new Button();
+        move.setText("Move");
+        move.setOnMouseClicked(event2 -> LifeRunner.runner(true));
+        move.getStyleClass().add("button1");
+        hbox.getChildren().add(move);
 
-        Button edit = new Button("Edit");
-        edit.getStyleClass().add("button1");
-        hbox.getChildren().add(edit);
+        Button stop = new Button("Stop");
+        stop.setOnMouseClicked(event1 -> LifeRunner.setRunningState(false));
+        stop.getStyleClass().add("button1");
+        hbox.getChildren().add(stop);
         GridPane gridPane = new GridPane();
         gridPane.setHgap(1);
         gridPane.setVgap(1);

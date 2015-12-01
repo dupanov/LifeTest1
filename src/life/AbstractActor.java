@@ -22,7 +22,9 @@ public abstract class AbstractActor  {
     static private int fieldSize;
     private int x;
     private int y;
-    static ArrayList<Actor> actorArrayList ;
+    static ArrayList<Actor> actorArrayList;
+    private boolean doChange = false;
+    private boolean alive = false;
 
 
     final static private int actorSize = 30;
@@ -54,6 +56,8 @@ public abstract class AbstractActor  {
 
     public AbstractActor(int i, int j) {
         lifeImage = new Image(getClass().getResourceAsStream("life.png"));
+        actorLocation.x = i;
+        actorLocation.y = j;
         pic.setFitWidth(100);
         pic.setPreserveRatio(true);
         pic.setSmooth(true);
@@ -99,20 +103,34 @@ public abstract class AbstractActor  {
         return this.pic;
     }
 
-    public void move(){
-        if(countNeighbors()==2 || countNeighbors()==3){
-            setAlive();
-        } else {setDead();}
 
+    public void move(){
+        if(!doChange){
+        if(countNeighbors()==2 || countNeighbors()==3){
+            alive = true;
+        } else {alive  = false;}
+        }
+        if(doChange){
+            if(alive){
+                setAlive();}
+            else if(!alive){
+                setDead();
+            }
+            doChange = false;
+        }
     }
+
 
     private int countNeighbors()  {
         int counter = 0;
-        try{
         int x=getx();
         int y = gety();
-        for(int i=x-1;i<x+2;i++){
-            for(int j=y-1;j<y+2;j++){
+        int i, j;
+        if(x>1) i=x-1; else i=0;
+        if(y>1) j=y-1; else j=0;
+        try{
+        for(;i<x+2;i++){
+            for(;j<y+2;j++){
                 Location loc = new Location();
                 loc.x = i;
                 loc.y = j;
@@ -123,6 +141,7 @@ public abstract class AbstractActor  {
         }
         }catch(NullPointerException e){
             System.out.println("exeption" + x + " " + y + " " + counter);
+
         }
         return counter;
     }
