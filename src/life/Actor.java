@@ -23,9 +23,9 @@ public Actor(){
         super(i, j);
     }
 
-    @Override
-    public Actor getActor(Location loc){
-        return (Actor) super.getActor(loc);
+
+    public static Actor getActor(Location loc){
+        return (Actor) AbstractActor.getActor(loc);
     }
 
     public void move(){

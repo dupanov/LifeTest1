@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application  {
-
+    public  static LifeRunner life = new LifeRunner();
     @Override
     public void start(Stage primaryStage) {
 
@@ -30,12 +30,12 @@ public class Main extends Application  {
 
         Button move = new Button();
         move.setText("Move");
-        move.setOnMouseClicked(event2 -> LifeRunner.runner(true));
+        move.setOnMouseClicked(event2 -> life.runner(true));
         move.getStyleClass().add("button1");
         hbox.getChildren().add(move);
 
         Button stop = new Button("Stop");
-        stop.setOnMouseClicked(event1 -> LifeRunner.setRunningState(false));
+        stop.setOnMouseClicked(event1 -> life.setRunningState(false));
         stop.getStyleClass().add("button1");
         hbox.getChildren().add(stop);
         GridPane gridPane = new GridPane();

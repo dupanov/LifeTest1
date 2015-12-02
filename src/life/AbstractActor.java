@@ -11,23 +11,19 @@ import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
 
 
 /**
- * Created by Вадик on 28.11.2015.
+ * Created by пїЅпїЅпїЅпїЅпїЅ on 28.11.2015.
  */
 public abstract class AbstractActor  {
 
 
     private Image lifeImage;
     private ImageView pic = new ImageView();
-    Location actorLocation = new Location();
-    static private int fieldSize;
     private int x;
     private int y;
-    static ArrayList<Actor> actorArrayList;
+    static ArrayList<Actor> actorArrayList = Main.life.getActorArrayList();
     private boolean doChange = false;
     private boolean alive = false;
-
-
-    final static private int actorSize = 30;
+    final static private int actorSize = 40;
 
     public AbstractActor() {
         lifeImage = new Image(getClass().getResourceAsStream("life.png"));
@@ -56,8 +52,8 @@ public abstract class AbstractActor  {
 
     public AbstractActor(int i, int j) {
         lifeImage = new Image(getClass().getResourceAsStream("life.png"));
-        actorLocation.x = i;
-        actorLocation.y = j;
+        this.setx(i);
+        this.sety(j);
         pic.setFitWidth(100);
         pic.setPreserveRatio(true);
         pic.setSmooth(true);
@@ -68,7 +64,7 @@ public abstract class AbstractActor  {
         pic.setImage(lifeImage);
         Rectangle2D viewportRect = new Rectangle2D(40,35,110,110);
         pic.setViewport(viewportRect);
-        pic.setRotate(360*Math.random());
+        pic.setRotate(360 * Math.random());
         pic.setPickOnBounds(true);
         pic.addEventHandler(MOUSE_CLICKED, event -> {
             event.consume();
@@ -106,18 +102,19 @@ public abstract class AbstractActor  {
 
     public void move(){
         if(!doChange){
-        if(countNeighbors()==2 || countNeighbors()==3){
+        if(countNeighbors()==0 || countNeighbors()==1){
             alive = true;
         } else {alive  = false;}
         }
         if(doChange){
             if(alive){
-                setAlive();}
+                this.setAlive();}
             else if(!alive){
-                setDead();
+                this.setDead();
             }
             doChange = false;
         }
+
     }
 
 
@@ -126,18 +123,21 @@ public abstract class AbstractActor  {
         int x=getx();
         int y = gety();
         int i, j;
-        if(x>1) i=x-1; else i=0;
-        if(y>1) j=y-1; else j=0;
+        if(x>1) i=x-1; else i=1;
         try{
-        for(;i<x+2;i++){
-            for(;j<y+2;j++){
+        while(i<x+2){
+            if(y>1) j=y-1; else j=1;
+            while(j<y+2){
                 Location loc = new Location();
                 loc.x = i;
                 loc.y = j;
                 if(getActor(loc).isAlive()){
                     counter++;
+
                 }
+                j++;
             }
+            i++;
         }
         }catch(NullPointerException e){
             System.out.println("exeption" + x + " " + y + " " + counter);
@@ -148,11 +148,6 @@ public abstract class AbstractActor  {
 
 
 
-    private Location getActorLocation(){
-        actorLocation.x = getx();
-        actorLocation.y = gety();
-        return this.actorLocation;
-    }
 
     public void setx(int i){
         this.x = i;
@@ -170,17 +165,23 @@ public abstract class AbstractActor  {
         return this.y;
     }
 
-    public AbstractActor getActor (Location loc){
+    public static AbstractActor getActor(Location loc){
         Iterator it = actorArrayList.iterator();
         while (it.hasNext()){
             AbstractActor abstractActor = (AbstractActor) it.next();
-            if(abstractActor.getActorLocation().equals(loc)){
+            if(abstractActor.equals(loc)){
                 return abstractActor;
             }
 
         }
         return null;
     }
+
+    public boolean equals (Location loc){
+        return this.getx() == loc.x && this.gety() == loc.y;
+    }
+
+
 
 }
 
