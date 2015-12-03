@@ -102,17 +102,19 @@ public abstract class AbstractActor  {
 
     public void move(){
         if(!doChange){
-        if(countNeighbors()==0 || countNeighbors()==1){
+        if(countNeighbors()==2 || countNeighbors()==3){
             alive = true;
         } else {alive  = false;}
+        doChange = true;
         }
         if(doChange){
             if(alive){
-                this.setAlive();}
+                setAlive();}
             else if(!alive){
-                this.setDead();
+                setDead();
             }
             doChange = false;
+            alive = false;
         }
 
     }
@@ -123,17 +125,18 @@ public abstract class AbstractActor  {
         int x=getx();
         int y = gety();
         int i, j;
-        if(x>1) i=x-1; else i=1;
+        if(x>1) {i=x-1;} else {i=1;}
         try{
         while(i<x+2){
-            if(y>1) j=y-1; else j=1;
+            if(y>1) {j=y-1;} else {j=1;}
             while(j<y+2){
                 Location loc = new Location();
                 loc.x = i;
                 loc.y = j;
-                if(getActor(loc).isAlive()){
-                    counter++;
-
+                if(loc.isValid()){
+                    if(getActor(loc).isAlive()){
+                        counter++;
+                    }
                 }
                 j++;
             }
@@ -143,7 +146,11 @@ public abstract class AbstractActor  {
             System.out.println("exeption" + x + " " + y + " " + counter);
 
         }
-        return counter;
+        finally {
+            System.out.println("Counter" + counter);
+            return counter;
+
+        }
     }
 
 

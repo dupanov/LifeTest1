@@ -16,5 +16,8 @@ public class Location {
         return hash;
     }
 
+    public boolean isValid(){
+        return (x>=0 & x <LifeRunner.getSize()) & (y>=0 & y <LifeRunner.getSize());
+    }
 
 }
