@@ -6,7 +6,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
 
 
@@ -21,8 +20,8 @@ public abstract class AbstractActor  {
     private int x;
     private int y;
     static ArrayList<Actor> actorArrayList = Main.life.getActorArrayList();
-    private boolean doChange = false;
-    private boolean alive = false;
+    public static boolean doChange;
+    private boolean alive;
     final static private int actorSize = 40;
 
     public AbstractActor() {
@@ -101,11 +100,16 @@ public abstract class AbstractActor  {
 
 
     public void move(){
+        int neighbours = 0;
         if(!doChange){
-        if(countNeighbors()==2 || countNeighbors()==3){
-            alive = true;
-        } else {alive  = false;}
-        doChange = true;
+            neighbours = countNeighbors();
+            if(!this.isAlive() && neighbours == 3){
+                alive = true;
+            } else if(this.isAlive() && (neighbours ==2 || neighbours == 3)) {
+                alive = true;
+            } else {
+                alive = false;
+                 }
         }
         if(doChange){
             if(alive){
@@ -113,41 +117,45 @@ public abstract class AbstractActor  {
             else if(!alive){
                 setDead();
             }
-            doChange = false;
-            alive = false;
         }
-
+if(this.x==0 && this.y==1){
+            System.out.println("this center "+isAlive()+alive+countNeighbors());
+        }
+        if(this.x==1 && this.y==0){
+            System.out.println("other center "+isAlive()+alive+countNeighbors());
+        }
     }
 
 
-    private int countNeighbors()  {
+    private int countNeighbors() {
         int counter = 0;
-        int x=getx();
-        int y = gety();
-        int i, j;
-        if(x>1) {i=x-1;} else {i=1;}
+        int dx=getx();
+        int dy=gety();
+        int j=dy-1;
+
         try{
-        while(i<x+2){
-            if(y>1) {j=y-1;} else {j=1;}
-            while(j<y+2){
+        while(j<dy+2){
+            int i=dx-1;
+
+            while(i<dx+2){
                 Location loc = new Location();
                 loc.x = i;
                 loc.y = j;
-                if(loc.isValid()){
+                if(loc.isValid() && !this.equals(loc)){
                     if(getActor(loc).isAlive()){
                         counter++;
                     }
                 }
-                j++;
+                i++;
             }
-            i++;
+            j++;
         }
         }catch(NullPointerException e){
             System.out.println("exeption" + x + " " + y + " " + counter);
 
         }
         finally {
-            System.out.println("Counter" + counter);
+            System.out.println("Counter = " + counter);
             return counter;
 
         }
@@ -160,8 +168,8 @@ public abstract class AbstractActor  {
         this.x = i;
     }
 
-    public void sety (int i){
-        this.y = i;
+    public void sety (int j){
+        this.y = j;
     }
 
     public int getx(){

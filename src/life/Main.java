@@ -38,9 +38,7 @@ public class Main extends Application  {
         stop.setOnMouseClicked(event1 -> life.setRunningState(false));
         stop.getStyleClass().add("button1");
         hbox.getChildren().add(stop);
-        Button moveActor = new Button("Move1");
-        hbox.getChildren().add(moveActor);
-        moveActor.setOnMouseClicked(vent ->life.runner2(1,2));
+
         GridPane gridPane = new GridPane();
         gridPane.setHgap(1);
         gridPane.setVgap(1);

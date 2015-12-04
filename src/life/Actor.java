@@ -14,14 +14,6 @@ import java.awt.event.MouseEvent;
  */
 public class Actor extends AbstractActor {
 
-    private boolean doChange = false;
-    private boolean alive = false;
-
-
-public Actor(){
-    super();
-}
-
 
     public Actor(int i, int j){
         super(i, j);
@@ -31,10 +23,5 @@ public Actor(){
     public static Actor getActor(Location loc){
         return (Actor)AbstractActor.getActor(loc);
     }
-
-    public void  move(){
-        super.move();
-    }
-
 
 }

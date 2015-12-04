@@ -8,7 +8,7 @@ import java.util.Iterator;
  * Created by ????? on 24.11.2015.
  */
 public class LifeRunner {
-    static private int size = 50;
+    static private int size = 3;
     static private boolean runningState = false;
     private static ArrayList<Actor> actorArrayList = new ArrayList<>();
 
@@ -18,8 +18,8 @@ public class LifeRunner {
     }
 
     public static void setActorArrayList(GridPane grid) {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
+        for (int j = 0; j < size; j++) {
+            for (int i = 0; i < size; i++) {
                 Actor actor = new Actor(i, j);
                 actorArrayList.add(i + j, actor);
                 grid.add(actor.getPic(), i, j);
@@ -34,21 +34,22 @@ public class LifeRunner {
             Iterator it = actorArrayList.iterator();
             while(it.hasNext()){
                 Actor act = (Actor)it.next();
+                AbstractActor.doChange = false;
                 act.move();
-                System.out.println("runner "+act + " "+ act.getx() + " "+ act.gety() );
-
+                System.out.println("runner "+act.getx() + " "+ act.gety() );
             }
+        it = actorArrayList.iterator();
+        while(it.hasNext()){
+            Actor act = (Actor)it.next();
+            AbstractActor.doChange = true;
+            act.move();
+            System.out.println("runner "+ act.getx() + " "+ act.gety() );
+        }
 
        // }
     }
 
-    public void runner2(int i, int j){
-        Location loc = new Location();
-        loc.x = i;
-        loc.y = j;
-        Actor act = Actor.getActor(loc);
-        act.setAlive();
-    }
+
 
     public static int getSize(){
         return size;
