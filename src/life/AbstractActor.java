@@ -118,12 +118,6 @@ public abstract class AbstractActor  {
                 setDead();
             }
         }
-if(this.x==0 && this.y==1){
-            System.out.println("this center "+isAlive()+alive+countNeighbors());
-        }
-        if(this.x==1 && this.y==0){
-            System.out.println("other center "+isAlive()+alive+countNeighbors());
-        }
     }
 
 
