@@ -1,23 +1,39 @@
 package life;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Вадик on 24.11.2015.
  */
 public class Location {
-    int x;
-    int y;
+    private int x;
+    private int y;
 
-    protected int hashLocation(){
-        int hash=0;
-        hash = this.x*1000 + y;
-        return hash;
+    public Location(){};
+
+    public Location(int col, int raw){
+        this.x = col;
+        this.y = raw;
     }
+
 
     public boolean isValid(){
         return (x>=0 & x <LifeRunner.getSize()) & (y>=0 & y <LifeRunner.getSize());
+    }
+    public boolean equals (Location loc){
+        return this.getx() == loc.x && this.gety() == loc.y;
+    }
+
+    public int getx(){
+        return x;
+    }
+    public int gety(){
+        return y;
+    }
+
+    public void setx(int col){
+        x = col;
+    }
+    public void sety(int raw){
+        y = raw;
     }
 
 }

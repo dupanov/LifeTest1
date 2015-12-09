@@ -14,15 +14,13 @@ import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
  */
 public abstract class AbstractActor  {
 
-
     private Image lifeImage;
     private ImageView pic = new ImageView();
-    private int x;
-    private int y;
-    static ArrayList<Actor> actorArrayList = Main.life.getActorArrayList();
-    public static boolean doChange;
+    private static ArrayList<Actor> actorArrayList = Main.getLife().getActorArrayList();
+    private static boolean doChange;
     private boolean alive;
-    final static private int actorSize = 40;
+    final private static int actorSize = 40;
+    private Location location ;
 
     public AbstractActor() {
         lifeImage = new Image(getClass().getResourceAsStream("life.png"));
@@ -51,8 +49,7 @@ public abstract class AbstractActor  {
 
     public AbstractActor(int i, int j) {
         lifeImage = new Image(getClass().getResourceAsStream("life.png"));
-        this.setx(i);
-        this.sety(j);
+        this.location = new Location(i, j);
         pic.setFitWidth(100);
         pic.setPreserveRatio(true);
         pic.setSmooth(true);
@@ -61,9 +58,9 @@ public abstract class AbstractActor  {
         pic.setFitWidth(actorSize);
         pic.setFitHeight(actorSize);
         pic.setImage(lifeImage);
-        Rectangle2D viewportRect = new Rectangle2D(40,35,110,110);
-        pic.setViewport(viewportRect);
-        pic.setRotate(360 * Math.random());
+       // Rectangle2D viewportRect = new Rectangle2D(40,35,110,110);
+     //   pic.setViewport(viewportRect);
+        pic.setRotate(getAngle());
         pic.setPickOnBounds(true);
         pic.addEventHandler(MOUSE_CLICKED, event -> {
             event.consume();
@@ -76,7 +73,15 @@ public abstract class AbstractActor  {
         setDead();
     }
 
-
+    public int getAngle(){
+        int rand = (int) (360*Math.random());
+        if(rand>= 0   && rand < 45 ) return 0;
+        if(rand>= 45  && rand < 135) return 90;
+        if(rand>= 135 && rand < 225) return 180;
+        if(rand>= 225 && rand < 315) return 270;
+        if(rand>= 315 && rand <= 360)return 0;
+        return 0;
+    }
 
 
     public boolean isAlive() {
@@ -120,11 +125,18 @@ public abstract class AbstractActor  {
         }
     }
 
+    public static void setDoChange(boolean val){
+        doChange = val;
+    }
+
+    public static boolean getDoChange(){
+        return doChange;
+    }
 
     private int countNeighbors() {
         int counter = 0;
-        int dx=getx();
-        int dy=gety();
+        int dx=location.getx();
+        int dy=location.gety();
         int j=dy-1;
 
         try{
@@ -133,9 +145,9 @@ public abstract class AbstractActor  {
 
             while(i<dx+2){
                 Location loc = new Location();
-                loc.x = i;
-                loc.y = j;
-                if(loc.isValid() && !this.equals(loc)){
+                loc.setx(i);
+                loc.sety(j);
+                if(loc.isValid() && !location.equals(loc)){
                     if(getActor(loc).isAlive()){
                         counter++;
                     }
@@ -145,53 +157,23 @@ public abstract class AbstractActor  {
             j++;
         }
         }catch(NullPointerException e){
-            System.out.println("exeption" + x + " " + y + " " + counter);
-
+            System.out.println("exeption" + location.getx() + " " + location.gety() + " " + counter);
         }
-        finally {
-            System.out.println("Counter = " + counter);
-            return counter;
-
-        }
+        finally {return counter;}
     }
 
 
-
-
-    public void setx(int i){
-        this.x = i;
-    }
-
-    public void sety (int j){
-        this.y = j;
-    }
-
-    public int getx(){
-        return  this.x;
-    }
-
-    public int gety (){
-        return this.y;
-    }
 
     public static AbstractActor getActor(Location loc){
         Iterator it = actorArrayList.iterator();
         while (it.hasNext()){
             AbstractActor abstractActor = (AbstractActor) it.next();
-            if(abstractActor.equals(loc)){
+            if(abstractActor.location.equals(loc)){
                 return abstractActor;
             }
-
         }
         return null;
     }
-
-    public boolean equals (Location loc){
-        return this.getx() == loc.x && this.gety() == loc.y;
-    }
-
-
-
 }
 
 

@@ -14,11 +14,9 @@ import java.awt.event.MouseEvent;
  */
 public class Actor extends AbstractActor {
 
-
     public Actor(int i, int j){
         super(i, j);
     }
-
 
     public static Actor getActor(Location loc){
         return (Actor)AbstractActor.getActor(loc);

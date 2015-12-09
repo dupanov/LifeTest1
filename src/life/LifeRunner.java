@@ -4,12 +4,14 @@ import javafx.scene.layout.GridPane;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+
+
 /**
  * Created by ????? on 24.11.2015.
  */
-public class LifeRunner {
-    static private int size = 3;
-    static private boolean runningState = false;
+public class LifeRunner extends Thread  {
+    private static int size = 20;
+    private static boolean runningState = false;
     private static ArrayList<Actor> actorArrayList = new ArrayList<>();
 
 
@@ -28,25 +30,33 @@ public class LifeRunner {
     }
 
 
-    public static void runner(boolean val){
+    public static void runner(boolean val)  {
         setRunningState(val);
-      //  while(getRunningState()){
+        while(getRunningState()){
+            try {
+                sleep(400);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            try {
+                Main.stage.wait(400);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Iterator it = actorArrayList.iterator();
             while(it.hasNext()){
                 Actor act = (Actor)it.next();
-                AbstractActor.doChange = false;
+                AbstractActor.setDoChange(false);
                 act.move();
-                System.out.println("runner "+act.getx() + " "+ act.gety() );
             }
         it = actorArrayList.iterator();
         while(it.hasNext()){
             Actor act = (Actor)it.next();
-            AbstractActor.doChange = true;
+            AbstractActor.setDoChange(true);
             act.move();
-            System.out.println("runner "+ act.getx() + " "+ act.gety() );
         }
 
-       // }
+        }
     }
 
 
@@ -68,8 +78,6 @@ public class LifeRunner {
         runningState = val;
     }
 
-    public static void main(String[] args) {
-        setRunningState(true);
-        Main.main(args);
-    }
+
+
 }
