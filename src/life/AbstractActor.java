@@ -58,17 +58,15 @@ public abstract class AbstractActor  {
         pic.setFitWidth(actorSize);
         pic.setFitHeight(actorSize);
         pic.setImage(lifeImage);
-       // Rectangle2D viewportRect = new Rectangle2D(40,35,110,110);
-     //   pic.setViewport(viewportRect);
         pic.setRotate(getAngle());
         pic.setPickOnBounds(true);
         pic.addEventHandler(MOUSE_CLICKED, event -> {
-            event.consume();
             if (!isAlive()) {
                 setAlive();
             } else {
                 setDead();
             }
+
         });
         setDead();
     }

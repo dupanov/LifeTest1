@@ -1,5 +1,6 @@
 package life;
 
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,6 +14,7 @@ public class LifeRunner extends Thread  {
     private static int size = 20;
     private static boolean runningState = false;
     private static ArrayList<Actor> actorArrayList = new ArrayList<>();
+    private int aliveCounter;
 
 
     public ArrayList<Actor> getActorArrayList(){
@@ -30,36 +32,45 @@ public class LifeRunner extends Thread  {
     }
 
 
-    public static void runner(boolean val)  {
-        setRunningState(val);
-        while(getRunningState()){
-            try {
-                sleep(400);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            try {
-                Main.stage.wait(400);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Iterator it = actorArrayList.iterator();
-            while(it.hasNext()){
-                Actor act = (Actor)it.next();
-                AbstractActor.setDoChange(false);
-                act.move();
-            }
-        it = actorArrayList.iterator();
-        while(it.hasNext()){
-            Actor act = (Actor)it.next();
-            AbstractActor.setDoChange(true);
-            act.move();
-        }
+    public void runner(boolean val) {
+        Thread trd2 = new Thread(() -> {
+            setRunningState(val);
+             while(getRunningState()) {
+                 Iterator it = actorArrayList.iterator();
+                 while (it.hasNext()) {
+                     Actor act = (Actor) it.next();
+                     AbstractActor.setDoChange(false);
+                     act.move();
+                     AbstractActor.setDoChange(true);
+                     act.move();
 
-        }
+                 }
+
+                 try {
+                     currentThread().sleep(Main.getSpeedSliderValue());
+                 } catch (InterruptedException e) {
+                     e.printStackTrace();
+                 }
+             }
+
+        });
+        trd2.start();
+        //if(aliveCounter==0) {
+        //    setRunningState(false);
+        //    Main.setLabelText((Label)Main.getLabel());
+        //}
+
     }
 
-
+    public int liveActorsCount(){
+        aliveCounter =0;
+        Iterator it = actorArrayList.iterator();
+        while (it.hasNext()) {
+            Actor act = (Actor) it.next();
+            if(act.isAlive()) ++aliveCounter;
+        }
+        return aliveCounter;
+    }
 
     public static int getSize(){
         return size;
@@ -70,14 +81,12 @@ public class LifeRunner extends Thread  {
     }
 
 
-    public static boolean getRunningState(){
+    public boolean getRunningState(){
         return runningState;
     }
 
-    public static void setRunningState(boolean val){
+    public void setRunningState(boolean val){
         runningState = val;
     }
-
-
 
 }
